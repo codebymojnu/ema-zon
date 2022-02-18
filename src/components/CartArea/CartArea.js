@@ -1,22 +1,31 @@
 import React from 'react';
+import './cart.css';
 
 const CartArea = (props) => {
-    const total = props.cart.reduce( (total, element) => total + element.price, 0);
-
+    const {cart} = props;
+    let total = 0;
+    let totalQuantity = 0;
+    for (const product of cart) {
+        if (!product.quantity) {
+            product.quantity = 1;
+        }
+        total = total + product.price * product.quantity;
+        totalQuantity = totalQuantity + product.quantity;
+    }
     // tax area
 
     let tax = 0;
-    if(total > 0){
-        tax = total/10;
+    if (total > 0) {
+        tax = total / 10;
     }
 
     // shipping area
 
     let shipping = 0;
-    if(total > 0 && total < 200){
+    if (total > 0 && total < 200) {
         shipping = 5;
     }
-    else if(total > 200){
+    else if (total > 200) {
         shipping = 0;
     }
 
@@ -28,12 +37,41 @@ const CartArea = (props) => {
 
     return (
         <div>
-            <h2 style={{textAlign: 'center', borderBottom: '2px dashed gray', paddingBottom: '5px'}}>Order Summary</h2>
-            <p>Items Ordered: {props.cart.length}</p>
-            <p>Total Product Price: ${formatNumber(total)}</p>
-            <p>Tax: ${formatNumber(tax)}</p>
-            <p>Shipping: ${shipping}</p>
-            <h3 style={{textAlign: 'center'}}>Total: {formatNumber(grandtotal)}</h3>
+            <h2 style={{ textAlign: 'center', borderBottom: '2px dashed gray', paddingBottom: '5px' }}>Order Summary</h2>
+            <p style={{ textAlign: 'center' }}>Items Ordered: {totalQuantity}</p>
+            <div className="center">
+               <div>
+                    <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Product Price: </td>
+                            <td>${formatNumber(total)}</td>
+                        </tr>
+                        <tr>
+                            <td>Tax: </td>
+                            <td>${formatNumber(tax)}</td>
+                        </tr>
+                        <tr>
+                            <td style={{ borderBottom: '0.5px solid black', paddingBottom: '5px' }}>Shipping: </td>
+                            <td style={{ borderBottom: '0.5px solid black', paddingBottom: '5px' }}>${shipping}</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td>Total: </td>
+                            <td>${formatNumber(grandtotal)}</td>
+                        </tr>
+                    </tfoot>
+                </table>
+               </div>
+            </div>
+            {props.children}
         </div>
     );
 };

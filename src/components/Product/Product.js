@@ -1,11 +1,12 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons'
+import Rating from 'react-rating';
 
 const Product = (props) => {
-    const {name, img, seller, price, stock} = props.product;
+    const {name, img, seller, price, stock, star} = props.product;
     return (
-        <div style={{margin: '10px', backgroundColor: 'white', display: 'flex'}}>
+        <div style={{margin: '10px', backgroundColor: 'white', display: 'flex', padding: '20px'}}>
            <div style={{marginRight: '10px'}}>
                 <img src={img} alt={seller}/>
            </div>
@@ -14,7 +15,14 @@ const Product = (props) => {
                 <p>by- {seller}</p>
                 <p>price: ${price}</p>
                 <p>Only {stock} left stock - order soon</p>
-                <button style={{backgroundColor: 'gold', width: '100px', cursor: 'pointer', border: '1px solid gray'}} onClick={() => props.handleAddProduct(props.product)}><FontAwesomeIcon icon={faShoppingCart} />Add to Cart</button>
+                <Rating 
+                initialRating={star}
+                emptySymbol="far fa-star"
+                fullSymbol="fas fa-star"
+                readonly/>
+                <br/>
+                <br/>
+                <button style={{backgroundColor: 'gold', width: '180px', cursor: 'pointer', border: '1px solid gray', padding: '10px', fontSize: '1.1em'}} onClick={() => props.handleAddProduct(props.product)}><FontAwesomeIcon icon={faShoppingCart} style={{marginRight: '12px'}}/>Add to Cart</button>
            </div>
         </div>
     );
